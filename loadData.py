@@ -6,16 +6,12 @@ def load_data(data_dir):
     images = []
     labels = []
 
-    mem = {}
-    emptyLabels =[]
-    # Iterating over the directory of training images
-    for index, image_file in enumerate(os.listdir(os.path.join(data_dir, "images"))):
-
-        image_name = image_file.split('.')[0]
+    # Iterating over the directory of training/testing images
+    for image_file in os.listdir(os.path.join(data_dir, "images")):
         # Load the image
         image_path = os.path.join(data_dir, "images", image_file)
         image = cv2.imread(image_path)
-        images.append(image)  # Append the loaded image to the images list
+        
 
         # Load the labels
         label_file = os.path.join(data_dir, "labels", os.path.splitext(image_file)[0] + ".txt")
@@ -31,22 +27,13 @@ def load_data(data_dir):
                 'width': float(data[3]),
                 'height': float(data[4])
             })
-        
-        if len(label) > 0:
-            # remember the class of the image
-            mem.update({image_name: label[0]['class']})
-        else:
+        # If the label is empty, skip the iteration
+        if not(len(label) > 0):
             print("empty", label, image_file)
-            emptyLabels.append([index, image_name])
+            continue
 
-        labels.append(label)
-
-    for index,image_name in emptyLabels:
-        print(index, image_name,)
-        print(mem)
-        labels[index] = mem[image_name]
-
-    print(mem)
+        labels.append(label)  # Append the not empty label to the labels list
+        images.append(image)  # Append the loaded image to the images list
     
     return np.array(images), np.array(labels, dtype=object)
 
