@@ -4,7 +4,6 @@ import os
 import cv2
 # TensorFlow and tf.keras
 import tensorflow as tf
-import torch
 
 # Helper libraries
 import numpy as np
@@ -91,7 +90,6 @@ for i in range(25):
     plt.xlabel(class_names[train_labels[i]])
 plt.show()
 
-time.sleep(2)
 
 
 # train model
@@ -100,6 +98,8 @@ from keras.models import Sequential
 from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D
 
 model = Sequential([
+    Conv2D(32, (3, 3), activation='relu', input_shape=(640, 640, 3)),
+    MaxPooling2D((2, 2)),
     Flatten(input_shape=(640,640,3)),
     Dense(128, activation='relu'),
     Dense(7, activation='softmax')
@@ -115,4 +115,4 @@ model = Sequential([
 model.compile(optimizer= 'adam',loss= 'sparse_categorical_crossentropy'   ,metrics = ['accuracy'] )
 
 
-model.fit(train_images, train_labels, batch_size=32, epochs=8)
+model.fit(train_images, train_labels, batch_size=20, epochs=8)
