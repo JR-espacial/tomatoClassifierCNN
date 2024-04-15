@@ -179,3 +179,12 @@ model.compile(optimizer= 'adam',loss= 'sparse_categorical_crossentropy'   ,metri
 
 
 model.fit(images_tensor, train_labels, batch_size=80, epochs=5)
+
+
+images_tensor = tf.convert_to_tensor(np.array(p_test_i))
+# Evaluate the model on the test data
+test_loss, test_accuracy = model.evaluate(images_tensor, test_labels)
+
+# Print the test loss and accuracy
+print("Test Loss:", test_loss)
+print("Test Accuracy:", test_accuracy)
