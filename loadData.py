@@ -136,8 +136,8 @@ print("Number of testing labels:", test_labels.shape)
 class_names = ['Bacterial Spot', 'Early Blight', 'Healthy', 'Late Blight', 'Leaf Mold', 'Target Spot', 'Black Spot']
 
 
-p_train_i = preprocess_images(train_images,224,224)
-p_test_i = preprocess_images(test_images,224,224)
+p_train_i = preprocess_images(train_images,128,128)
+p_test_i = preprocess_images(test_images,128,128)
 
 # Before preprocessing
 plt.figure(figsize=(10,10))
@@ -161,21 +161,21 @@ for i in range(25):
     plt.xlabel(class_names[train_labels[i]])
 plt.show()
 
-
+images_tensor = tf.convert_to_tensor(np.array(p_train_i))
 # train model
 
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D
 
-
-images_tensor = tf.convert_to_tensor(np.array(p_train_i))
-
 model = Sequential([
-    Flatten(input_shape=(224,224,3)),
+    Conv2D(32, (3, 3), activation='relu', input_shape=(128, 128, 3)),
+    MaxPooling2D((2, 2)),
+    Flatten(input_shape=(128,128,3)),
     Dense(128, activation='relu'),
     Dense(7, activation='softmax')
 ])
 
 model.compile(optimizer= 'adam',loss= 'sparse_categorical_crossentropy'   ,metrics = ['accuracy'] )
 
-model.fit(images_tensor, train_labels, batch_size=32, epochs=8)
+
+model.fit(images_tensor, train_labels, batch_size=80, epochs=5)
