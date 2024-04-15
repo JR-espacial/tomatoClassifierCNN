@@ -17,18 +17,13 @@ def load_data(data_dir):
         label_file = os.path.join(data_dir, "labels", os.path.splitext(image_file)[0] + ".txt")
         with open(label_file, 'r') as f:
             lines = f.readlines()
-        label = []
+
+        label = None
         for line in lines:
             data = line.strip().split(' ')
-            label.append({
-                'class': int(data[0]),
-                'x_center': float(data[1]),
-                'y_center': float(data[2]),
-                'width': float(data[3]),
-                'height': float(data[4])
-            })
+            label = int(data[0])
         # If the label is empty, skip the iteration
-        if not(len(label) > 0):
+        if label is None:
             print("empty", label, image_file)
             continue
 
@@ -50,6 +45,8 @@ print("Number of training images:", train_images.shape)
 print("Number of training labels:", train_labels.shape)
 print("Number of testing images:", test_images.shape)
 print("Number of testing labels:", test_labels.shape)
+
+print("train_labels", train_labels)
 
 
 # notEmptytrain = 0
