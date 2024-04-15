@@ -92,37 +92,26 @@ def remove_shadows(image):
     
     return result
 
-def preprocess_images(images):
+def preprocess_images(images, new_width, new_height):
     preprocessed_images = []
     for image in images:
         # Convert image to numpy array
         image = np.array(image)
 
-        #reduce reflection
+        # Reduce reflection and remove shadows
         image = reduce_reflection(image)
-
         image = remove_shadows(image)
 
-        # # Apply Gaussian blur to reduce noise
-        # blurred = cv2.GaussianBlur(image, (5, 5), 0)
-
-        # # Convert image to grayscale
-        # gray = cv2.cvtColor(blurred, cv2.COLOR_BGR2GRAY)
-
-        # # Apply CLAHE (Contrast Limited Adaptive Histogram Equalization)
-        # clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-        # enhanced = clahe.apply(gray)
-
-        # # Convert image back to BGR (if necessary)
-        # enhanced = cv2.cvtColor(enhanced, cv2.COLOR_GRAY2BGR)
+        # Resize image
+        image_resized = cv2.resize(image, (new_width, new_height))
 
         # Normalize pixel values to be between 0 and 1
-        enhanced = image.astype(np.float32) / 255.0
+        image_resized = image_resized.astype(np.float32) / 255.0
 
         # Convert numpy array to TensorFlow tensor
-        enhanced_tensor = tf.convert_to_tensor(enhanced)
+        image_tensor = tf.convert_to_tensor(image_resized)
 
-        preprocessed_images.append(enhanced_tensor)
+        preprocessed_images.append(image_tensor)
 
     return preprocessed_images
 
@@ -147,10 +136,8 @@ print("Number of testing labels:", test_labels.shape)
 class_names = ['Bacterial Spot', 'Early Blight', 'Healthy', 'Late Blight', 'Leaf Mold', 'Target Spot', 'Black Spot']
 
 
-
-
-p_train_i = preprocess_images(train_images)
-p_test_i = preprocess_images(test_images)
+p_train_i = preprocess_images(train_images,224,224)
+p_test_i = preprocess_images(test_images,224,224)
 
 # Visualize training images
 plt.figure(figsize=(10,10))
@@ -175,18 +162,6 @@ for i in range(25):
 plt.show()
 
 
-# Segment training and testing images
-segmented_train_images = segment_images(p_train_i)
-segmented_test_images = segment_images(p_test_i)
-
-
-# Visualize segmented images
-plt.figure(figsize=(10, 10))
-for i in range(min(len(segmented_train_images), 25)):
-    plt.subplot(5, 5, i+1)
-    plt.imshow(segmented_train_images[i])
-    plt.axis('off')
-plt.show()
 
 
 
