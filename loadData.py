@@ -139,7 +139,7 @@ class_names = ['Bacterial Spot', 'Early Blight', 'Healthy', 'Late Blight', 'Leaf
 p_train_i = preprocess_images(train_images,224,224)
 p_test_i = preprocess_images(test_images,224,224)
 
-# Visualize training images
+# Before preprocessing
 plt.figure(figsize=(10,10))
 for i in range(25):
     plt.subplot(5,5,i+1)
@@ -150,7 +150,7 @@ for i in range(25):
     plt.xlabel(class_names[train_labels[i]])
 plt.show()
 
-
+#After Preprocessing
 plt.figure(figsize=(10,10))
 for i in range(25):
     plt.subplot(5,5,i+1)
@@ -162,30 +162,20 @@ for i in range(25):
 plt.show()
 
 
+# train model
+
+from keras.models import Sequential
+from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D
 
 
+images_tensor = tf.convert_to_tensor(np.array(p_train_i))
 
-# # train model
+model = Sequential([
+    Flatten(input_shape=(224,224,3)),
+    Dense(128, activation='relu'),
+    Dense(7, activation='softmax')
+])
 
-# from keras.models import Sequential
-# from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D
+model.compile(optimizer= 'adam',loss= 'sparse_categorical_crossentropy'   ,metrics = ['accuracy'] )
 
-# model = Sequential([
-#     Conv2D(32, (3, 3), activation='relu', input_shape=(640, 640, 3)),
-#     MaxPooling2D((2, 2)),
-#     Flatten(input_shape=(640,640,3)),
-#     Dense(128, activation='relu'),
-#     Dense(7, activation='softmax')
-# ])
-
-# """
-#     compile the model using:
-#     for optimization use adam optimizer  'adam'
-#     for loss use sparse categorcil crossentropy with logits use the object from tensorflow
-#     tf.keras.losses.SparseCategoricalCrossentropy pass logits as true
-#     for metrics use accuracy
-# """
-# model.compile(optimizer= 'adam',loss= 'sparse_categorical_crossentropy'   ,metrics = ['accuracy'] )
-
-
-# model.fit(train_images, train_labels, batch_size=20, epochs=8)
+model.fit(images_tensor, train_labels, batch_size=32, epochs=8)
