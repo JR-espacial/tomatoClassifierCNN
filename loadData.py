@@ -1,13 +1,9 @@
-import time
+#load data.py
 import numpy as np
 import os
 import cv2
 # TensorFlow and tf.keras
 import tensorflow as tf
-
-# Helper libraries
-import numpy as np
-import matplotlib.pyplot as plt
 
 
 def load_data(data_dir):
@@ -114,77 +110,3 @@ def preprocess_images(images, new_width, new_height):
         preprocessed_images.append(image_tensor)
 
     return preprocessed_images
-
-
-
-# Directory of training data
-train_data_dir = "train"
-test_data_dir = "test"
-
-# Load training data
-train_images, train_labels = load_data(train_data_dir)
-test_images, test_labels = load_data(test_data_dir)
-
-
-# Print the shape of the loaded data
-print("Number of training images:", train_images.shape)
-print("Number of training labels:", train_labels.shape)
-print("Number of testing images:", test_images.shape)
-print("Number of testing labels:", test_labels.shape)
-
-# Define class names
-class_names = ['Bacterial Spot', 'Early Blight', 'Healthy', 'Late Blight', 'Leaf Mold', 'Target Spot', 'Black Spot']
-
-
-p_train_i = preprocess_images(train_images,128,128)
-p_test_i = preprocess_images(test_images,128,128)
-
-# Before preprocessing
-plt.figure(figsize=(10,10))
-for i in range(25):
-    plt.subplot(5,5,i+1)
-    plt.xticks([])
-    plt.yticks([])
-    plt.grid(False)
-    plt.imshow(train_images[i], cmap=plt.cm.binary)
-    plt.xlabel(class_names[train_labels[i]])
-plt.show()
-
-#After Preprocessing
-plt.figure(figsize=(10,10))
-for i in range(25):
-    plt.subplot(5,5,i+1)
-    plt.xticks([])
-    plt.yticks([])
-    plt.grid(False)
-    plt.imshow(p_train_i[i], cmap=plt.cm.binary)
-    plt.xlabel(class_names[train_labels[i]])
-plt.show()
-
-images_tensor = tf.convert_to_tensor(np.array(p_train_i))
-# train model
-
-from keras.models import Sequential
-from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D
-
-model = Sequential([
-    Conv2D(32, (3, 3), activation='relu', input_shape=(128, 128, 3)),
-    MaxPooling2D((2, 2)),
-    Flatten(input_shape=(128,128,3)),
-    Dense(128, activation='relu'),
-    Dense(7, activation='softmax')
-])
-
-model.compile(optimizer= 'adam',loss= 'sparse_categorical_crossentropy'   ,metrics = ['accuracy'] )
-
-
-model.fit(images_tensor, train_labels, batch_size=80, epochs=5)
-
-
-images_tensor = tf.convert_to_tensor(np.array(p_test_i))
-# Evaluate the model on the test data
-test_loss, test_accuracy = model.evaluate(images_tensor, test_labels)
-
-# Print the test loss and accuracy
-print("Test Loss:", test_loss)
-print("Test Accuracy:", test_accuracy)

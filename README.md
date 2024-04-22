@@ -6,6 +6,20 @@ En el archivo load_data, me encargué primeramente de leer los datos y cargar ta
 
 También normalicé los datos y les di la forma que espera el modelo.
 
-Despues de algunos ejercicios con el modelo me dicuenta de que no aprendia mucho y descubri algunas cosas que mejorar en el modelo:
+Dataset:
+# Tomato Leaf DIseases Detect > 2024-03-04 3:55pm
+https://www.kaggle.com/datasets/farukalam/tomato-leaf-diseases-detection-computer-vision
 
-actualemente estoy trabajando para destacat aun mas las carateristicas mas relevantes eliminar ruido con normalizacion de los colores, buscar eliminar reflejos y detectar contronos de las manchas
+https://universe.roboflow.com/sylhet-agricultural-university/tomato-leaf-diseases-detect
+
+Provided by a Roboflow user
+License: Public Domain
+
+
+Paper de refercia para mejoras:
+  https://www.sciencedirect.com/science/article/pii/S2590005623000383
+
+  - Increase epoch num
+  - Add more layers
+  - Network architecture that starts with a larger number of filters and gradually reduces the number of filters in deeper layers
+  - Drop out 25%
