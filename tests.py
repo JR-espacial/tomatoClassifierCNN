@@ -1,7 +1,7 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, f1_score
 import seaborn as sns
 
 # Load the model
@@ -14,19 +14,26 @@ def test_model(images,labels, model):
     # Print the test loss and accuracy
     print("Test Accuracy:", test_accuracy)
     print("Test Loss:", test_loss)
-    plot_predict(model, images, labels)
-
-    
-
-
-# Plot the accuracy and loss
-def plot_predict(model, test_images, test_labels):
 
     # Make predictions on the test data
-    predictions = model.predict(test_images)
+    predictions = model.predict(images)
 
     # Get the predicted classes for each image
     predicted_classes = np.argmax(predictions, axis=1)
+
+
+    plot_confusion(predicted_classes, labels)
+
+    #f1 test
+    f1 = f1_score(labels, predicted_classes, average='weighted')
+
+
+    print("F1 Score:", f1)
+    
+
+
+# Plot the confusion matrix
+def plot_confusion(predicted_classes, test_labels):
 
     # Compute confusion matrix
     conf_matrix = confusion_matrix(test_labels, predicted_classes)
