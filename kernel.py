@@ -14,6 +14,11 @@ def rebalance_datasets(train_images, train_labels, test_images, test_labels, val
     all_images = np.concatenate((train_images, test_images, val_images))
     all_labels = np.concatenate((train_labels, test_labels, val_labels))
 
+
+    #print how many labels of each class
+    for i in range(7):
+        print("Number of labels of class", i, ":", np.sum(all_labels == i))
+
     #redestructure the data according to the out_percentages
     new_train_images = []
     new_train_labels = []
