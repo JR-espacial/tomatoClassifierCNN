@@ -40,6 +40,26 @@ def load_data(data_dir):
     
     return images_tensor, labels_tensor
 
+def load_data2(data_dir, class_names):
+    images = []
+    labels = []
+    for img_name in os.listdir(data_dir):
+        img_path = os.path.join(data_dir, img_name)
+        # Read the image
+        img = cv2.imread(img_path)
+        # Preprocess the image (if needed)
+        # Add the image to the list
+        images.append(img)
+        # Extract label from the image name
+        label = img_name.split('_')[0]  # Assuming the class name is before the first underscore
+        # Append the index of the class name in class_names
+        if label in class_names:
+            labels.append(class_names.index(label))
+        else:
+            print(f"Warning: '{label}' not found in class_names.")
+
+    return images, labels  
+
 def reduce_reflection(image):
     # Convert image to LAB color space
     lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
