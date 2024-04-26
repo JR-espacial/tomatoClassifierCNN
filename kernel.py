@@ -84,7 +84,9 @@ def execute(function_name, function, *args):
     #prompt the use if he wants to ecexute the function name
     opt = input("Do you want to " + function_name + " ? (y/n)")
     if opt == "y":
-        function(*args)
+        output = function(*args)
+        if output != None:
+            return output
     else:
         print("Function " + function_name + " was not executed")
     
@@ -160,7 +162,7 @@ val_labels = np.array(val_labels)
 
 
 #Train the model
-execute("train the model",train_model,images_tensor,train_labels,val_images,val_labels)
+history = execute("train the model",train_model,images_tensor,train_labels,val_images,val_labels)
 
 # Load the model
 model = tf.keras.models.load_model('jorge.h5')

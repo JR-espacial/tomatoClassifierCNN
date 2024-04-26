@@ -41,14 +41,6 @@ def train_model(images_tensor, train_labels, val_images, val_labels):
     
     # #graph the accuracy and loss
     history = model.history.history
-    # plt.figure()
-    # plt.plot(history['accuracy'], label='accuracy')
-    # plt.plot(history['val_accuracy'], label = 'val_accuracy')
-    # plt.xlabel('Epoch')
-    # plt.ylabel('Accuracy')
-    # plt.ylim([0, 1])
-    # plt.legend(loc='lower right')
-    # plt.show()
     # Graph the accuracy and loss
     plt.figure(figsize=(12, 6))
 

@@ -7,8 +7,6 @@ import seaborn as sns
 # Load the model
 def test_model(images,labels, model):
     # Evaluate the model on the test data
-
-
     test_loss, test_accuracy = model.evaluate(images, labels)
     
     # Print the test loss and accuracy
@@ -20,7 +18,8 @@ def test_model(images,labels, model):
 
     # Get the predicted classes for each image
     predicted_classes = np.argmax(predictions, axis=1)
-
+    # Plot confidence distribution
+    plot_confidence_distribution(predictions, labels)
 
     plot_confusion(predicted_classes, labels)
 
@@ -30,7 +29,18 @@ def test_model(images,labels, model):
 
     print("F1 Score:", f1)
     
+# Plot the distribution of confidence scores
+def plot_confidence_distribution(predictions, test_labels):
+    # Get the maximum confidence score for each prediction
+    max_confidences = np.max(predictions, axis=1)
 
+    # Plot histogram of confidence scores
+    plt.figure(figsize=(8, 6))
+    plt.hist(max_confidences, bins=30, alpha=0.75)
+    plt.xlabel('Confidence')
+    plt.ylabel('Frequency')
+    plt.title('Distribution of Confidence Scores')
+    plt.show()
 
 # Plot the confusion matrix
 def plot_confusion(predicted_classes, test_labels):
