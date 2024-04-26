@@ -21,6 +21,13 @@ def test_model(images,labels, model):
     # Plot confidence distribution
     plot_confidence_distribution(predictions, labels)
 
+    # Define class names (7)
+    class_names = [ 'BacterialSpot', 'EarlyBlight', 
+                'Healthy', 'LateBlight', 'LeafMold', 
+                'TargetSpot', 'BlackSpot']
+    
+    plot_predictedImages(images,predictions, class_names)
+
     plot_confusion(predicted_classes, labels)
 
     #f1 test
@@ -55,3 +62,17 @@ def plot_confusion(predicted_classes, test_labels):
     plt.ylabel('True Label')
     plt.title('Confusion Matrix')
     plt.show()
+
+
+def get_prediction_label(probabilities, class_names):
+	return class_names[np.argmax(probabilities)]
+
+def plot_predictedImages(images,predictions, class_names):
+    plt.figure(figsize=(10,10))
+    for i in range(25):
+        plt.subplot(5,5,i+1)
+        plt.xticks([])
+        plt.yticks([])
+        plt.grid(False)
+        plt.imshow(images[i], cmap=plt.cm.binary)
+        plt.xlabel(get_prediction_label(predictions[i], class_names))
