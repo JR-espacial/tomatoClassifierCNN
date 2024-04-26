@@ -22,10 +22,10 @@ def create_model():
     model = Sequential([
         Conv2D(100, (3, 3), activation='relu', input_shape=(128, 128, 3)),
         MaxPooling2D((2, 2)),
-        Dropout(0.20),
+        Dropout(0.21),
         Conv2D(64, (3, 3), activation='relu'),
         MaxPooling2D((2, 2)),
-        Dropout(0.20),
+        Dropout(0.23),
         Flatten(input_shape=(128,128,3)),
         Dense(128, activation='relu'),
         Dense(7, activation='softmax')
