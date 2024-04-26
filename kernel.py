@@ -149,7 +149,7 @@ val_labels = tf.convert_to_tensor(np.array(val_labels))
 
 #show shape of the data
 print("Shape of the data")
-print(images_tensor.shape)
+print( images_tensor.shape)
 print(label_tensor.shape)
 print(val_images.shape)
 print(val_labels.shape)
