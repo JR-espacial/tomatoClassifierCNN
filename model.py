@@ -22,10 +22,10 @@ def create_model():
     model = Sequential([
         Conv2D(100, (3, 3), activation='relu', input_shape=(128, 128, 3)),
         MaxPooling2D((2, 2)),
-        Dropout(0.21),
+        Dropout(0.22),
         Conv2D(64, (3, 3), activation='relu'),
         MaxPooling2D((2, 2)),
-        Dropout(0.23),
+        Dropout(0.22),
         Flatten(input_shape=(128,128,3)),
         Dense(128, activation='relu'),
         Dense(7, activation='softmax')
@@ -35,8 +35,8 @@ def create_model():
 
 def train_model(images_tensor, train_labels, val_images, val_labels):
     model = create_model()
-    model.compile(optimizer= 'adam',loss= 'sparse_categorical_crossentropy',metrics = ['accuracy'] )
-    model.fit(images_tensor, train_labels, batch_size=32, epochs=10, validation_data=(val_images, val_labels))
+    model.compile(optimizer= tf.keras.optimizers.Adam(learning_rate=0.001) ,loss= 'sparse_categorical_crossentropy',metrics = ['accuracy'] )
+    model.fit(images_tensor, train_labels, batch_size=32, epochs=20, validation_data=(val_images, val_labels))
     model.summary()
     
     # #graph the accuracy and loss
