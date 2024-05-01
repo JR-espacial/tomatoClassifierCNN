@@ -9,6 +9,12 @@ import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 
+from tests import test_model
+
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
+
+
 
 def load_data(data_dir):
     images = []
@@ -115,15 +121,52 @@ def preprocess_images(images, new_width, new_height):
 
     return preprocessed_images
 
+# Plot training metrics
+def plot_metrics(history):
+    plt.figure(figsize=(12, 6))
+
+    # Plot accuracy
+    plt.subplot(1, 2, 1)
+    plt.plot(history['accuracy'], label='Training Accuracy')
+    plt.plot(history['val_accuracy'], label='Validation Accuracy')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.title('Accuracy')
+    plt.legend()
+
+    # Plot loss
+    plt.subplot(1, 2, 2)
+    plt.plot(history['loss'], label='Training Loss')
+    plt.plot(history['val_loss'], label='Validation Loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.title('Loss')
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
+
+# Plot confusion matrix
+def plot_confusion_matrix(y_true, y_pred, class_names):
+    cm = confusion_matrix(y_true, y_pred)
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=class_names, yticklabels=class_names)
+    plt.title('Confusion Matrix')
+    plt.xlabel('Predicted labels')
+    plt.ylabel('True labels')
+    plt.show()
+
 
 
 # Directory of training data
 train_data_dir = "train"
 test_data_dir = "test"
+val_data_dir = "valid"
 
 # Load training data
 train_images, train_labels = load_data(train_data_dir)
 test_images, test_labels = load_data(test_data_dir)
+val_images, val_labels = load_data(val_data_dir)
 
 
 # Print the shape of the loaded data
@@ -138,6 +181,9 @@ class_names = ['Bacterial Spot', 'Early Blight', 'Healthy', 'Late Blight', 'Leaf
 
 p_train_i = preprocess_images(train_images,128,128)
 p_test_i = preprocess_images(test_images,128,128)
+p_val_i = preprocess_images(val_images,128,128)
+
+val_images = tf.convert_to_tensor(np.array(p_val_i))
 
 # Before preprocessing
 plt.figure(figsize=(10,10))
@@ -178,13 +224,28 @@ model = Sequential([
 model.compile(optimizer= 'adam',loss= 'sparse_categorical_crossentropy'   ,metrics = ['accuracy'] )
 
 
-model.fit(images_tensor, train_labels, batch_size=80, epochs=5)
+model.fit(images_tensor, train_labels, batch_size=80, epochs=5,validation_data=(val_images, val_labels))
+
+history = model.history.history
+
+# Plot accuracy and loss
+plot_metrics(history)
+
+# Define class names (7)
+class_names = [ 'BacterialSpot', 'EarlyBlight', 
+            'Healthy', 'LateBlight', 'LeafMold', 
+            'TargetSpot', 'BlackSpot']
+
+# Plot confusion matrix
+predictions = np.argmax(model.predict(val_images), axis=-1)
+plot_confusion_matrix(val_labels, predictions, class_names)
 
 
 images_tensor = tf.convert_to_tensor(np.array(p_test_i))
 # Evaluate the model on the test data
-test_loss, test_accuracy = model.evaluate(images_tensor, test_labels)
 
-# Print the test loss and accuracy
-print("Test Loss:", test_loss)
-print("Test Accuracy:", test_accuracy)
+# Convert test_images and test_labels to NumPy arrays
+test_images = np.array(p_test_i)
+test_labels = np.array(test_labels)
+#Testing the model
+test_model(test_images, test_labels,model)
