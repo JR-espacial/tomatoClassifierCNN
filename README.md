@@ -2,6 +2,26 @@
 
 Este proyecto tiene como objetivo detectar con la mayor precisión posible las lesiones en las hojas de plantas de tomate y distinguir entre 7 categorías diferentes.
 
+
+## Running
+
+El proyecto puede ejecutarse con el comando:
+
+```bash
+python .\kernel.py
+```
+
+Esto comenzará la ejecución. Durante la ejecución, se separa el proceso en diferentes pasos. Para cada paso, se te preguntará si quieres ejecutarlo o seguir al siguiente. Esto puede ser útil si quieres evitar entrenar el modelo.
+
+## Estructura de archivos
+
+- `./SplitData` contiene el dataset final usado.
+- `kernel.py` tiene el hilo de ejecución principal.
+- `loadData.py` tiene funciones de preprocesado y carga de los datos.
+- `model.py` contiene todo lo relacionado al modelo, como creación, entrenamiento y graficado.
+- `tests.py` contiene todas las pruebas y gráficas finales para los datos de prueba.
+
+
 ## Dataset
 
 El conjunto de datos proviene de:
@@ -39,6 +59,13 @@ Todos los datos agregados provienen de aquí (se utilizó el helper 1 y 2 para i
 Por último, en las últimas fases del modelo me di cuenta de que aún había algunas imágenes que metían ruido ya que estaban en blanco y negro, por lo que decidí eliminarlas.
 
 El dataset usado puede observarse en la carpeta SplitData.
+
+## Paper de Referencia
+
+[Paper CNN](https://www.sciencedirect.com/science/article/pii/S2590005623000383#bib21)
+
+Tambien puede encontrar el pdf en este repo como: 
+`ReferencePaper.pdf`
 
 ## Categorias
 
@@ -193,3 +220,35 @@ Mayor Acc lograda
 
 
 ## Resultados primer y utimo modelo
+
+# Modelo 3 
+
+First Model Train
+![First Model Traina](firstmodelTrain.jpeg)
+
+First Model Test
+![First Model Test](firstModelTest.jpeg)
+
+First Train Metrics
+![First Model Train Metrics](firstModelTrainMetrics.jpeg)
+
+First Model Confidence
+![First Model Confidence](firstModelConfidence.jpeg)
+
+# Modelo Final
+
+
+Last Model Train
+![last Model Traina](lastmodelTrain.jpeg)
+
+Last Model Test
+![last Model Test](lastModelTest.jpeg)
+
+Last Train Metrics
+![last Model Train Metrics](lastModelTrainMetrics.jpeg)
+
+Last Model Confidence
+![last Model Confidence](lasmodelConfidence.jpeg)
+
+
+
