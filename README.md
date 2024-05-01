@@ -9,6 +9,8 @@ El conjunto de datos original incluye 737 imágenes de hojas de tomate con lesio
 - Orientación automática de los datos de píxeles (con eliminación de la orientación EXIF).
 - Redimensionamiento a 640x640 (estiramiento).
 
+## Model
+
 
 
 ## Fuentes de Datos
@@ -49,6 +51,9 @@ Las imágenes han sido preprocesadas utilizando OpenCV para eliminar reflejos y 
 ## Modelo
 
 Se utiliza una red neuronal convolucional (CNN) para este proyecto, ya que estas capas permiten extraer los features más importantes de las imágenes. La arquitectura y los detalles específicos del modelo se agregarán en futuras actualizaciones.
+
+
+
 
 ## División de Datos
 
