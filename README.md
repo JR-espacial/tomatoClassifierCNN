@@ -42,26 +42,19 @@ El dataset usado puede observarse en la carpeta SplitData.
 
 ## Categorias
 
-1. Bacterial Spot (Manchas Bacterianas)
-Las manchas bacterianas en las hojas de tomate, también conocidas como manchas bacterianas del tomate, son causadas por la bacteria Xanthomonas campestris pv. vesicatoria. Esta enfermedad es común en áreas con clima cálido y húmedo, y puede causar daños significativos en los cultivos de tomate. Las lesiones aparecen como pequeñas manchas de agua en las hojas, que eventualmente se convierten en manchas necróticas con un halo amarillo. Si la enfermedad es severa, puede provocar la defoliación de la planta y la pérdida de rendimiento.
+1. **Manchas Bacterianas (Bacterial Spot):** Las hojas de tomate afectadas muestran pequeñas manchas de agua que luego se convierten en manchas necróticas con un halo amarillo. En casos severos, puede llevar a la defoliación de la planta y disminución del rendimiento.
 
-2. Early Blight (Mildiú Temprano)
-El mildiú temprano es causado por el hongo Alternaria solani y puede infectar las hojas de tomate en cualquier momento durante el ciclo de crecimiento de la planta. Esta enfermedad se caracteriza por lesiones irregulares cerca del suelo, que desarrollan parches amarillos que se oscurecen en anillos concéntricos negros y pueden tener una región clorótica alrededor de la lesión.
+2. **Mildiú Temprano (Early Blight):** Se caracteriza por lesiones irregulares cerca del suelo, que se tornan amarillas y luego se oscurecen en anillos concéntricos negros. Pueden presentar una región clorótica alrededor de la lesión.
 
-3. Healthy (Sano)
-Las hojas sanas tienen vigor, un color uniforme (a menos que sean variegadas), crecimiento abierto y una apariencia erguida.
+3. **Sano (Healthy):** Hojas vigorosas, con color uniforme, crecimiento abierto y una apariencia erguida.
 
-4. Late Blight (Mildiú Tardío)
-El mildiú tardío, causado por el hongo Phytophthora infestans, es una de las enfermedades más devastadoras para las hojas de tomate a nivel mundial, causando grandes pérdidas económicas anuales. Se detecta típicamente en las hojas recién desarrolladas en la parte superior de la planta, con lesiones irregulares y encharcadas como los primeros signos. A medida que empeora, las lesiones se vuelven más grandes y las hojas afectadas se vuelven marrones, marchitas y mueren.
+4. **Mildiú Tardío (Late Blight):** Se detecta en las hojas recién desarrolladas en la parte superior de la planta. Las lesiones son irregulares y encharcadas al principio, luego las hojas afectadas se vuelven marrones, marchitas y mueren.
 
-5. Leaf Mold (Moho en las Hojas)
-El moho en las hojas del tomate es causado por el hongo Passalora fulva. Se caracteriza por pequeñas manchas redondas, verde-amarillentas y borrosas en la parte superior de las hojas. El hongo se asienta en las hojas y penetra en los estomas de la planta, que se utilizan para el intercambio de gases.
+5. **Moho en las Hojas (Leaf Mold):** Pequeñas manchas redondas, verde-amarillentas y borrosas en la parte superior de las hojas, causadas por el hongo Passalora fulva.
 
-6. Target Spot (Mancha Objetivo)
-La mancha objetivo en las hojas de tomate es causada por el hongo Corynespora cassiicola. Se desarrolla en regiones con clima cálido durante todo el año y se manifiesta inicialmente como pequeñas manchas llenas de agua en las hojas. Las manchas se convierten en pequeñas lesiones necróticas con centros marrones claros y márgenes oscuros. Estas infecciones pueden reducir la producción indirectamente al disminuir el área fotosintética y directamente al hacer que el fruto sea menos comercializable debido a las manchas en el fruto.
+6. **Mancha Objetivo (Target Spot):** Se inicia como pequeñas manchas llenas de agua, que se convierten en lesiones necróticas con centros marrones claros y márgenes oscuros. Puede afectar la producción al disminuir el área fotosintética y la calidad del fruto.
 
-7. Black Spot (Manchas Negras)
-Las manchas negras en las hojas de tomate pueden ser causadas por varias enfermedades fúngicas, como Alternaria alternata y Alternaria solani. Estas enfermedades suelen desarrollarse en condiciones de alta humedad y pueden causar lesiones necróticas en las hojas de tomate. Las manchas negras pueden variar en tamaño y forma, y si no se controlan adecuadamente, pueden provocar la defoliación de la planta y la reducción del rendimiento del cultivo.
+7. **Manchas Negras (Black Spot):** Pueden ser causadas por varias enfermedades fúngicas, desarrollándose en condiciones de alta humedad. Provocan lesiones necróticas en las hojas que pueden llevar a la defoliación y reducción del rendimiento del cultivo.
 
 
 ## Model
@@ -167,15 +160,36 @@ Este modelo fue el mejor dio en general en todas las pruebas, otros intentos mej
 
 ```python
 model = Sequential([
-        Conv2D(100, (3, 3), activation
-
-='relu', input_shape=(128, 128, 3)),
+        Conv2D(128, (3, 3), activation='relu', input_shape=(128, 128, 3)),
         MaxPooling2D((2, 2)),
-        Dropout(0.21),
         Conv2D(64, (3, 3), activation='relu'),
         MaxPooling2D((2, 2)),
-        Dropout(0.23),
+        Conv2D(32, (3, 3), activation='relu'),
+        MaxPooling2D((2, 2)),
+        Dropout(0.10),
+        Conv2D(32, (3, 3), activation='relu'),
+        MaxPooling2D((2, 2)),
+        Dropout(0.5),
         Flatten(input_shape=(128,128,3)),
-        Dense(128, activation='relu'),
+        Dense(300, activation='relu'),
+        Dropout(0.5),
         Dense(7, activation='softmax')
+    ])
 ```
+
+## Evolucion de los resultados
+
+Antes del balanceo pocos datos en test (5%)
+![Antes del balaceo pocos test](beforeRebalance.jpeg)
+
+Despues del balanceo  test (20%) sin embargo hacian falta datos
+![Despues del balanceo  test](RebalaceWithSameImages.jpeg)
+
+Despues de agregar mas datos a otras clases
+![Despues de agregar mas datos](RebalanceNewDataSet.jpeg)
+
+Mayor Acc lograda
+![Mayor Acc lograda](BiggestAcc.jpeg)
+
+
+## Resultados primer y utimo modelo
