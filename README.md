@@ -13,6 +13,13 @@ python .\kernel.py
 
 Esto comenzará la ejecución. Durante la ejecución, se separa el proceso en diferentes pasos. Para cada paso, se te preguntará si quieres ejecutarlo o seguir al siguiente. Esto puede ser útil si quieres evitar entrenar el modelo.
 
+Para correr pruebas personalizadas debes poner tu querie a probar en ./queries
+la imagen que sera cargada debes llamarla image.png esta sera la imagen que se carga al correr el script
+
+```bash
+python .\CostumImg.py
+```
+
 ## Estructura de archivos
 
 - `./SplitData` contiene el dataset final usado.
