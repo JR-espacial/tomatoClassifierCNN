@@ -40,7 +40,26 @@ Por último, en las últimas fases del modelo me di cuenta de que aún había al
 
 El dataset usado puede observarse en la carpeta SplitData.
 
+## Model
 
+| Parameter               | Value                    |
+|-------------------------|--------------------------|
+| Optimization algorithm  | Adam optimizer           |
+| Learning rate (α)       | 0.001                    |
+| Batch size              | 32                       |
+| Number of epochs        | 22                       |
+| Dropout rate            | 0.10 (after 3rd Conv2D), 0.5 (after 4th Conv2D and 1st Dense) |
+| Loss function           | Sparse categorical crossentropy |
+| Activation function (Hidden layers) | ReLU          |
+| Activation function (Output layer)  | Softmax       |
+
+
+- Uso Sparce categorical cross entropy como loss basado en 
+lo aprendido en la clase para problemas de clasificacion  ya que la manera en la que castiga pormueve un mejor aprendizaje
+
+- Uso softmax en la utima capa ya que sigmoid ni binary no serian lo apropiado por el numero de clases que tengo
+
+- Uso un dropout mayor en las pirmeras capas ya que no querio que memorizen y mas bajoen las siguientes para que nos se pierda repetinamente el aprendizaje en el refinamiento
 
 ### Preprocesado
 
